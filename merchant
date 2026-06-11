@@ -1,0 +1,240 @@
+import random
+import pandas as pd
+import time
+
+trade_count = 0
+trade_success_count = 0
+trade_fail_count = 0
+
+
+def typewrite(text):
+    for char in text:
+        print(char, end="", flush=True)
+        time.sleep(0.05)
+
+
+barter_chance = 0.3
+
+money = 0
+
+# --- Sample Data Provided ---
+inventory_data = {
+    'item_name': [
+        'Iron Sword', 'Health Potion', 'Steel Pickaxe', 'Loaf of Bread', 'Wooden Shield',
+        'Helmet of Darkness', 'Cloak of Shadows', 'Ring of Wisdom', 'Mana Potion',
+        'Dragonfire Bow', 'Plate Armor', 'Elven Shortblade', 'Mystic Orb'
+    ],
+    'category': [
+        'weapon', 'consumable', 'tool', 'food', 'armor',
+        'armor', 'armor', 'accessory', 'consumable',
+        'weapon', 'armor', 'weapon', 'accessory'
+    ],
+    'base_cost': [
+        150.0, 50.0, 80.0, 5.0, 45.0,
+        300.0, 250.0, 500.0, 75.0,
+        600.0, 800.0, 200.0, 750.0
+    ],
+    'quantity': [
+        5, 20, 10, 50, 8,
+        3, 4, 1, 15,
+        2, 2, 6, 1
+    ],
+    'attack': [
+        25, 0, 10, 0, 0,
+        0, 0, 0, 0,
+        40, 0, 18, 0
+    ],
+    'defense': [
+        0, 0, 0, 0, 10,
+        25, 15, 5, 0,
+        0, 50, 0, 10
+    ]
+}
+
+inventory_df = pd.DataFrame(inventory_data)
+inventory_df.set_index('item_name', inplace=True)
+print(inventory_df)
+
+trading = True
+
+base_cost = inventory_df[['base_cost']]
+
+names = [
+    # Traditional & Rustic
+    "Alaric", "Bram", "Cedric", "Eldrin", "Gideon", "Jasper", "Kaelen", "Lyle",
+    "Milo", "Orin", "Silas", "Tobias", "Ulric", "Valen", "Willa", "Anwen",
+    "Beatrix", "Cora", "Elspeth", "Flora", "Greta", "Hazel", "Isolde", "Maeve", "Ophelia",
+
+    # Trade & Craft-Inspired
+    "Baker", "Cooper", "Fletcher", "Miller", "Sawyer", "Smith", "Tanner", "Thatcher",
+    "Weaver", "Wright", "Adler", "Barrett", "Colter", "Garrick", "Giles", "Harlan",
+    "Magnus", "Osric", "Radcliff", "Torin", "Aldous", "Barton", "Clement", "Dunstan", "Grover",
+
+    # Fantasy & Mythic
+    "Arlo", "Baxar", "Cassian", "Dagfinn", "Embre", "Feron", "Gethrod", "Hawke",
+    "Ishmael", "Jareth", "Kadric", "Lenox", "Mavrek", "Ophni", "Paskel", "Quintis",
+    "Revvyn", "Syrin", "Tekren", "Vale", "Weston", "Yorjan", "Zaden", "Lydan", "Hezra",
+
+    # Cozy & Nature-Inspired
+    "Basil", "Clover", "Daisy", "Fern", "Iris", "Ivy", "Juniper", "Lark",
+    "Maple", "Moss", "Olive", "Pip", "Poppy", "Rowan", "Sage", "Willow",
+    "Wren", "Aster", "Bramble", "Dahlia", "Gale", "Meadow", "Reed", "Saffron", "Thistle"
+]
+
+categories = ['weapon', 'consumable', 'tool', 'food', 'armor', 'accessory']
+customer_item_data = {
+    'items': ['Wooden Sword', 'A frickin OVEN', 'A bomb with a 20 minute timer.. Better get this trade done fast', 'Wrapper','THE LONDON DAMN BRIDGE, how the hell do they even have that?','Basic Ring','Window..', 'King cobra', 'Dog', 'Electric CHAIR', 'Health Potion', 'Iron Cart','Big Ass Printer', 'Dead Human', 'Iphone 2 plus'],
+    'cust_item_cost':[60,200,70,5,350,50,75,100,90,70,25,30,125,250,90]
+    }
+customer_item_df = pd.DataFrame(customer_item_data)
+customer_item_df.set_index('items', inplace=True)
+
+print(customer_item_df)
+class Customer:
+    def __init__(self, name, budget, preference, loyalty_score, items):
+        self.name = customer_name
+        self.budget = budget
+        self.preference = preference
+        self.loyalty_score = loyalty_score
+        self.items = items
+        pass
+
+customer_name = random.choice(names)
+customer_budget = random.randint(10, 200)
+customer_pref = random.choice(categories)
+random_item = inventory_df.sample(n=1)
+proposed_price = random_item.base_cost.values[0]
+
+def randomize(customer_name, customer_budget, customer_pref, random_item):
+    customer_name = random.choice(names)
+    customer_budget = random.randint(10, 200)
+    customer_pref = random.choice(categories)
+    random_item = inventory_df.sample(n=1)
+    return customer_name, customer_budget, customer_pref, random_item
+
+
+c1 = Customer(customer_name, customer_budget, customer_pref, 1,1)
+
+print(c1)
+
+budget = c1.budget
+customer_items = customer_item_df.index.tolist()
+
+
+# NOTE: You will need 'inventory_df' from Sprint 1 and 'Customer' objects from Sprint 2
+
+# def process_transaction(customer, item_name, proposed_price, inventory_df, barter_chance, money):
+#     transaction_status = "Nil"
+
+#     if  in inventory_df:
+#         typewrite(f"Yes, we have {item_name} in stock.")
+#         item_base_cost = inventory_df.loc[item_name, 'base_cost']
+#         max_bid = item_base_cost * customer.loyalty_score
+
+#         if proposed_price <= max_bid:
+#             transaction_status = 'Sold'
+#         else:
+#             transaction_status = 'Not Sold'
+
+#         if transaction_status == 'Sold':
+#             customer.loyalty_score += 0.1
+#             trade_count += 1
+#             trade_success_count += 1
+#             barter_chance += 0.05
+#             inventory_df.loc[item_name, 'quantity'] -= 1
+#             money += proposed_price # Update money here
+#         elif transaction_status == 'Not Sold':
+#             customer.loyalty_score -= 0.1
+
+#         barter_chance += customer.loyalty_score
+#     else:
+#         typewrite(f"No, we don't have {item_name}, sorry!")
+
+#     return barter_chance, money
+
+def verify(proposed_price, budget, customer_items, customer_item_df, barter_chance, customer_name, trade_success_count, trade_count, trade_fail_count):
+      increase = 0
+      trade_final = 0
+      transaction_status = 'Nil'
+      customer_item_price2 = 0
+      if (proposed_price >= budget):
+        customer_item_trade = random.choice(customer_items)
+        customer_item_price = customer_item_df.loc[customer_item_trade, 'cust_item_cost'] # Corrected access
+        typewrite(f'\n{customer_name} wants to trade {customer_item_trade} with you')
+
+        if(proposed_price >= budget + customer_item_price):
+          barter_choice = random.random()
+
+          if barter_choice <= barter_chance:
+            customer_item_trade2 = random.choice(customer_items)
+            customer_item_price2 = customer_item_df.loc[customer_item_trade2, 'cust_item_cost'] # Corrected access
+            typewrite(f'\n{customer_name} also wants to trade {customer_item_trade2} with you')
+
+          if(proposed_price <= budget): #or proposed_price <= budget + customer_item_price or proposed_price <= budget + customer_item_price + customer_item_price2):
+              trade_final = input("Do you accept?? (y/n)").lower()
+          if(proposed_price <= budget + customer_item_price):
+            trade_final = input("Do you accept?? (y/n)").lower()
+          if(proposed_price <= budget + customer_item_price + customer_item_price2):
+            trade_final = input("Do you accept?? (y/n)").lower()
+
+
+
+          if(trade_final == "y"):
+              typewrite("Trade done successfully!")
+              transaction_status = 'Sold'
+              trade_success_count += 1
+              trade_count += 1
+                # money += base_cost # money is global
+
+          elif(trade_final == "n"):
+            typewrite("No deal")
+            transaction_status = "Not Sold"
+            trade_fail_count += 1
+            trade_count += 1
+
+
+
+          elif(barter_choice > barter_chance):
+            increase = input(f"This customer wants to negotiate and make the price {budget}, do you accept or ask for more (y/n)")
+
+            if(increase == "y"):
+              typewrite("Trade done successfully!")
+              transaction_status = 'Sold'
+              trade_success_count += 1
+              trade_count += 1
+                # money += base_cost # money is global
+
+            elif(increase == "n"):
+              typewrite("You ask for an increase")
+
+
+      return barter_chance, transaction_status
+
+
+def main():
+  global barter_chance, money
+  # Pass the correct customer object (c1) and inventory_df
+  global customer_name, customer_budget, customer_pref, random_item
+  customer_name, customer_budget, customer_pref, random_item = randomize(customer_name, customer_budget, customer_pref, random_item)
+
+
+  # barter_chance, money = process_transaction(c1, random_item, proposed_price, inventory_df, barter_chance, money)
+  # Call the verify function here
+  barter_chance, transaction_status = verify(proposed_price, c1.budget, customer_items, customer_item_df, barter_chance, customer_name, trade_success_count, trade_count, trade_fail_count)
+  if transaction_status == 'Sold':
+      money += proposed_price # Assuming 'Iron Sword' base_cost
+
+
+# Moved input inside the loop or before it if only asked once
+trade_continue = input("Do you want to continue trading?(y/n) ").lower()
+
+while trading:
+  if trade_continue == 'y': # Changed to 'if' not 'elif' since it's the start of the loop
+      main()
+      trade_continue = input("Do you want to continue trading?(y/n) ").lower() # Ask again for next iteration
+  elif trade_continue == 'n': # Changed to 'elif' if `trade_continue` is 'y' or 'n'
+      trading = False
+      typewrite(f"Thank you for trading with us! By the way, here are your stats! Trade count: {trade_count}, Successful trade count: {trade_success_count}, failed trade count: {trade_fail_count} and total money: {money}")
+  else:
+      print("Please enter 'y' or 'n'.")
+      trade_continue = input("Do you want to continue trading?(y/n) ").lower()
