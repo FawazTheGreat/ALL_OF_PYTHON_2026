@@ -1,0 +1,103 @@
+import time
+import random
+import pandas as pd
+animal_species = ["cat", "dog", "rabbit", "fox", "panda", "angel", "demon"]
+pet_names = ["Luna", "Max", "Milo", "Bella", "Cooper", "Oreo", "Loki", "Daisy", "Bear", "Gizmo"]
+class Pet:
+    def __init__(self, name, hunger, happiness, play_count, feed_count, energy, sleep_count, species, alive, thirst, drink_count):
+        self.name = name
+        self.hunger = hunger
+        self.happiness = happiness
+        self.energy = energy
+        self.play_count = play_count
+        self.feed_count = feed_count
+        self.sleep_count = sleep_count
+        self.species = species
+        self.alive = True
+        self.thirst = thirst # 0 is fine 100 is parched
+        self.drink_count = drink_count
+
+    def display_status(self):
+        status_text = f"\n{self.name}'s status:\n hunger: {self.hunger}\n happiness: {self.happiness}\n energy: {self.energy}\n thirst: {self.thirst}\n species: {self.species}"
+        typewrite(status_text)
+
+    def sleep(self):
+        self.sleep_count += 1
+        self.energy += 20
+        self.happiness -= 20
+        if self.energy > 100:
+            self.energy = 100
+
+    def drink(self):
+        self.drink_count += 1
+        self.thirst -= 20
+        self.energy -= 10
+        if self.thirst <= 0:
+            self.thirst = 0
+
+
+    def die(self):
+        typewrite("YOUR CHILD IS DEAD")
+        self.alive = False
+
+    def hunger_increase(self):
+        self.feed_count += 1
+        self.hunger -= 20 # this is essentially self.hunger = self.hunger + 20, just increases hunger by 20
+        self.energy -= 10
+        if self.hunger < 0: # comparing if hunger exceeds 0
+            self.hunger = 0 # stays at 0 if it exceeds
+
+    def happiness_increase(self):
+        self.play_count += 1
+        self.happiness += 20
+        self.energy -= 20 # this is essentially self.happiness = self.happiness + 20, just increases happiness by 20
+        if self.happiness > 100: # comparing if happiness exceeds 100
+            self.happiness = 100 # stays at 100 if it exceeds
+
+    def start(self): # the pet self i have to "start"
+        typewriteDOT("... ") # typewrite effect with dots
+        time.sleep(2) # time delay of 2 seconds
+        typewrite(f"i see u have a {self.species} named {self.name}, good luck with it") # introducing the pet, using typewrite effect
+
+        while self.alive: # infinite loop to keep the game running
+            time.sleep(2)
+            typewrite("\nso what would you like to do with your pet?")
+            time.sleep(1)
+            typewrite(f"\n1. feed\n2. play\n3. give Water\n4. pet sleep\n5. Check Status\n6. Exit\n")
+            choice = input("now enter your choice (1 through 6): ") # input for ur choice
+
+            if choice == '1': # essentially "if choice is 1"
+                self.hunger_increase() # do this action (call hunger_increase function)
+                typewrite(f"\nyou fed {self.name}. hunger is now {self.hunger}.") # then typewrite message
+            elif choice == '2': # else if choice 2
+                self.happiness_increase() # do this action (call happiness_increase function)
+                typewrite(f"\nyou played with {self.name}. Happiness is now {self.happiness}.")
+            elif choice == '3':
+                self.drink()
+                typewrite(f"\nyou gave water to {self.name}. Thirst is now {self.thirst}.")
+            elif choice == '4':
+                self.sleep()
+                typewrite(f"\n{self.name} took a nap. Energy is now {self.energy}.")
+            elif choice == '5':
+                self.display_status()
+            elif choice == '6':
+                typewrite(f"\nthank you for taking care of {self.name}! Before you go, here were your stats:\nFinal Energy {self.energy}, \nFinal hunger, {self.hunger}, \nFinal happiness, {self.happiness},\nFinal thirst: {self.thirst} \nFinal sleep count, {self.sleep_count}, \nFinal eat count, {self.feed_count}, \nFinal play count, {self.play_count}\nFinal drink count: {self.drink_count}.")
+                break # breaks the loop, ends game
+            else: # if none of the above choices
+                typewrite("\nplease choose a valid choice (1 through 6) if you can read, press a key to enter the choice of ur choice.") # ask for valid choice
+
+# todo:
+# a little boredom functionality, when you dont do anything with pet for some time it prints
+# pet is getting a bit bored.. call boredom increase function
+
+random_name = random.choice(pet_names)
+random_animal_species = random.choice(animal_species)
+pet_name = input("pets name: ") # input ur pet name
+real_pet_name = pet_name[0].upper() + pet_name[1:]
+gamepet = Pet(real_pet_name, 50, 70, 0, 0, 80, 0, random_animal_species, True, 60, 0) # sets the class Pet, to the name u entered
+preset_pet1 = Pet(random_name, 50, 70, 0, 0, 80, 0, random_animal_species, True, 60, 0)
+preset_pet2 = Pet(random_name, 50, 70, 0, 0, 80, 0, random_animal_species, True, 60, 0)
+preset_pet3 = Pet(random_name, 50, 70, 0, 0, 80, 0, random_animal_species, True, 60, 0)
+gamepet_dict = vars(gamepet)
+gamepet.display_status() # display the pets status wowowowowowoowowowowoowowowoowowowo
+game = gamepet.start() # calling start function to start the game
