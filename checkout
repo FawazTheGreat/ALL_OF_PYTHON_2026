@@ -1,0 +1,64 @@
+
+stuff = ["Laptop","Mouse","Keyboard"]
+
+
+coupon_1 = 0.7 # 30% off of laptops :P
+coupon_2 = 0.9 # 10% off of tech :I
+coupon_3 = 0.75 # 25% off of keyboards :D
+
+\
+
+buying = True
+
+while buying:
+  def total():
+    laptop_price = price[0]*l_amt + price[0]*tax * coupon_1 * coupon_2
+    mouse_price = price[1]*m_amt + price[1]*tax * coupon_2
+    keyboard_price = price[2]*k_amt + price[2]*tax * coupon_3 * coupon_2
+    total_price = laptop_price + mouse_price + keyboard_price
+    total_price = round(total_price, 2)
+    print(f"{l_amt} laptop(s), {k_amt} keyboard(s) and {m_amt} mouse/mice")
+    print(total_price)
+
+
+  ordering = int(input("do you want to buy? (1 for yes/0 for no) "))
+  choice = input("what do you want to order, laptops, mice, or keyboards? (l,m,k)").lower()
+
+  if ordering == 1:
+    buying = True
+    print("yes chosen")
+  elif ordering == 0:
+    total()
+    break
+  else:
+    print("please enter a valid choice")
+    ordering = int(input("do you want to buy? (1 for yes/0 for no) "))
+
+
+
+  if choice == "l":
+    l_amt = int(input('How many laptops do you want?'))
+
+  elif choice == 'm':
+    m_amt = int(input('How many mice do you want?'))
+
+  elif choice == 'k':
+    k_amt = int(input('How many keyboards do you want?'))
+  else:
+    print("please enter a valid choice")
+    choice = input("what do you want to order, laptops, mice, or keyboards? (l,m,k)").lower()
+
+
+
+  cart = [l_amt,m_amt,k_amt]
+
+  price = [1200.99,45.99,75.99]
+
+  linked = list(zip(stuff,price,cart))
+
+  tax = 0.051
+
+
+
+
+
